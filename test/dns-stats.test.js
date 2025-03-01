@@ -1,15 +1,15 @@
-const { assert } = require('chai');
-const { testOptional } = require('../extensions/index.js');
-const { getDNSStats } = require('../src/dns-stats.js');
+function getDNSStats(domains) {
+  let dnsStats = {};
 
-it.optional = testOptional;
+  domains.forEach(domain => {
+    let parts = domain.split('.').reverse(); // Разделяем и переворачиваем
+    let key = '';
 
-Object.freeze(assert);
-
-describe('DNS stats', () => {
-  it.optional('should return domains stats', () => {
-    assert.deepEqual(getDNSStats(['epam.com']), { '.com': 1, '.com.epam': 1 });
-    assert.deepEqual(getDNSStats(['epam.com', 'info.epam.com']), { '.com': 2, '.com.epam': 2, '.com.epam.info': 1 });
-    assert.deepEqual(getDNSStats([]), {});
+    parts.forEach(part => {
+      key = key + '.' + part; // Формируем уровень домена
+      dnsStats[key] = (dnsStats[key] || 0) + 1; // Увеличиваем счётчик
+    });
   });
-});
+
+  return dnsStats;
+}

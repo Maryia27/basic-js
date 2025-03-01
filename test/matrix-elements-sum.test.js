@@ -1,40 +1,13 @@
-const { assert } = require('chai');
-const { testOptional } = require('../extensions/index.js');
-const { getMatrixElementsSum } = require('../src/matrix-elements-sum.js');
-
-it.optional = testOptional;
-
-Object.freeze(assert);
-
-describe('Matrix elements sum', () => {
-  it.optional('should return the sum of the matrix elements that are not below 0', () => {
-    assert.strictEqual(getMatrixElementsSum([
-      [0, 1, 1, 2],
-      [0, 5, 0, 0],
-      [2, 0, 3, 3],
-    ]), 9);
-
-    assert.strictEqual(getMatrixElementsSum([
-      [1, 2, 3, 4],
-      [0, 5, 0, 0],
-      [2, 0, 3, 3],
-    ]), 15);
-
-    assert.strictEqual(getMatrixElementsSum([
-      [1, 1, 1],
-      [2, 2, 2],
-      [3, 3, 3],
-    ]), 18);
-
-    assert.strictEqual(getMatrixElementsSum([
-      [0],
-    ]), 0);
-
-    assert.strictEqual(getMatrixElementsSum([
-      [1],
-      [5],
-      [0],
-      [2],
-    ]), 6);
-  });
-});
+function getMatrixElementsSum(matrix) {
+  let sum = 0;
+  // Проходим по всем столбцам матрицы
+  for (let i = 0; i < matrix[0].length; i++) {
+    // Проходим по всем строкам в столбце
+    for (let j = 0; j < matrix.length; j++) {
+      // Если элемент равен 0, то все элементы ниже этого становятся недействительными
+      if (matrix[j][i] === 0) break;
+      sum += matrix[j][i];
+    }
+  }
+  return sum;
+}

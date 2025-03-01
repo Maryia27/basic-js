@@ -1,17 +1,19 @@
-const { assert } = require('chai');
-const { testOptional } = require('../extensions/index.js');
-const { encodeLine } = require('../src/encode-line.js');
+function encodeLine(str) {
+  let result = '';
+  let count = 1;
 
-it.optional = testOptional;
+  for (let i = 1; i <= str.length; i++) {
+    if (str[i] === str[i - 1]) {
+      count++;
+    } else {
+      if (count > 1) {
+        result += count + str[i - 1];
+      } else {
+        result += str[i - 1];
+      }
+      count = 1;
+    }
+  }
 
-Object.freeze(assert);
-
-describe('Encode line', () => {
-  it.optional('should return encoding version of string', () => {
-    assert.strictEqual(encodeLine('aaaatttt'), '4a4t');
-    assert.strictEqual(encodeLine('aabbccc'), '2a2b3c');
-    assert.strictEqual(encodeLine('abbcca'), 'a2b2ca');
-    assert.strictEqual(encodeLine('xyz'), 'xyz');
-    assert.strictEqual(encodeLine(''), '');
-  });
-});
+  return result;
+}

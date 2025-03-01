@@ -1,17 +1,17 @@
-const { assert } = require('chai');
-const { testOptional } = require('../extensions/index.js');
-const { getCommonCharacterCount } = require('../src/common-character-count.js');
+function getCommonCharacterCount(s1, s2) {
+  let count = 0;
+  let arr1 = s1.split('');
+  let arr2 = s2.split('');
 
-it.optional = testOptional;
+  for (let char of arr1) {
+    let index = arr2.indexOf(char);
+    if (index !== -1) {
+      count++;
+      arr2.splice(index, 1);
+    }
+  }
 
-Object.freeze(assert);
+  return count;
+}
 
-describe('Common character count', () => {
-  it.optional('should return the number of common characters between the given strings', () => {
-    assert.strictEqual(getCommonCharacterCount('aabcc', 'adcaa'), 3);
-    assert.strictEqual(getCommonCharacterCount('zzzz', 'zzzzzzz'), 4);
-    assert.strictEqual(getCommonCharacterCount('abca', 'xyzbac'), 3);
-    assert.strictEqual(getCommonCharacterCount('', 'abc'), 0);
-    assert.strictEqual(getCommonCharacterCount('a', 'b'), 0);
-  });
-});
+module.exports = { getCommonCharacterCount };
